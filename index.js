@@ -3,17 +3,16 @@ import { Server } from "socket.io";
 const io = new Server(process.env.PORT || 9000, {
   cors: {
     origin: "*",
-    transports: ['websocket']
   },
-});
+}); 
 
 let users = [];
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
-app.get('/', function(req, res){
-  res.send({ title: 'GeeksforGeeks' });
+app.get("/", function (req, res) {
+  res.send("Hello World");
 });
 
 const addUser = (userData, socketId) => {
