@@ -5,7 +5,7 @@ const io = new Server(process.env.PORT || 9000, {
     origin: "*",
     transports: ['websocket']
   },
-}); 
+});
 
 let users = [];
 const removeUser = (socketId) => {
