@@ -12,10 +12,6 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
-
 const addUser = (userData, socketId) => {
   !users.some((user) => user.sub === userData.sub) &&
     users.push({ ...userData, socketId });
