@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 const io = new Server(process.env.PORT || 9000, {
   cors: {
     origin: "*",
-    transports: ['websocket']
+    transports: ["websocket"],
   },
 });
 
@@ -22,6 +22,7 @@ const getUser = (userId) => {
 };
 
 io.on("connection", (socket) => {
+  console.log("server running");
   socket.on("addUsers", (userData) => {
     addUser(userData, socket.id);
     io.emit("getUsers", users);
