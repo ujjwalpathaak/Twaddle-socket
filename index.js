@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 const io = new Server(process.env.PORT || 9000, {
   cors: {
     origin: "*",
+    transports: ['websocket']
   },
 }); 
 
