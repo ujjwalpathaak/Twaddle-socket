@@ -1,10 +1,7 @@
 import { Server } from "socket.io";
 
 const io = new Server(process.env.PORT || 9000, {
-  cors: {
-    origin: "http://localhost:3000"
-    // origin: "http://localhost:5000"
-  },
+  cors: true,
 });
 
 let users = [];
