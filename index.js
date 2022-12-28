@@ -4,36 +4,42 @@ const io = new Server(process.env.PORT || 9000, {
   cors: true,
 });
 
-let users = [];
-
-const removeUser = (socketId) => {
-  users = users.filter((user) => user.socketId !== socketId);
-};
+// online array for all onlineUsersArray
+let onlineUsersArray = [];
 
 const addUser = (userData, socketId) => {
-  !users.some((user) => user.sub === userData.sub) &&
-    users.push({ ...userData, socketId });
+  let exist = false;
+  for (let i = 0; i < onlineUsersArray.length; i++) {
+    if (userData.sub == onlineUsersArray[i].sub) {
+      exist = true;
+      break;
+    }
+  }
+  if (!exist) {
+    onlineUsersArray.push({ ...userData, socketId });
+  }
 };
 
 const getUser = (userId) => {
-  return users.find((user) => user.sub === userId);
+  for (let i = 0; i < onlineUsersArray.length; i++) {
+    if (userId == onlineUsersArray[i].sub) {
+      return onlineUsersArray[i];
+    }
+  }
 };
 
-io.on("connection", (socket) => {
-  console.log("server running");
+io.on("connect", (socket) => {
   socket.on("addUsers", (userData) => {
     addUser(userData, socket.id);
-    io.emit("getUsers", users);
+    io.emit("getUsers", onlineUsersArray);
   });
 
   socket.on("sendMessage", (data) => {
     const user = getUser(data.receiverId);
-    io.to(user?.socketId).emit("getMessage", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-    removeUser(socket.id);
-    io.emit("getUsers", users);
+    if (!user) {
+      io.emit("noUserFound");
+    } else {
+      io.to(user.socketId).emit("getMessage", data);
+    }
   });
 });
