@@ -18,6 +18,7 @@ const addUser = (userData, socketId) => {
   if (!exist) {
     onlineUsersArray.push({ ...userData, socketId });
   }
+  
 };
 
 const getUser = (userId) => {
@@ -41,5 +42,9 @@ io.on("connect", (socket) => {
     } else {
       io.to(user.socketId).emit("getMessage", data);
     }
+  });
+
+  socket.on("getActiveUsers", (data) => {
+    io.emit("activeUsers", onlineUsersArray);
   });
 });
