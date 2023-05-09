@@ -18,7 +18,6 @@ const addUser = (userData, socketId) => {
   if (!exist) {
     onlineUsersArray.push({ ...userData, socketId });
   }
-  
 };
 
 const getUser = (userId) => {
